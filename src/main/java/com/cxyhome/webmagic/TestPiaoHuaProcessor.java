@@ -6,6 +6,9 @@ import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 import us.codecraft.webmagic.selector.Selectable;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class TestPiaoHuaProcessor  implements PageProcessor {
 
 
@@ -21,6 +24,13 @@ public class TestPiaoHuaProcessor  implements PageProcessor {
     //定义电影页码的正则 https://www.piaohua.com/html/dongzuo/list_2.html
     public static final String URL_POST = "http://www\\.piaohua\\.com/html/xiju/list_\\d\\.html";
 
+    String regex = "magnet\\:\\?xt=urn\\:btih:[1-9a-zA-Z]+";
+
+    Pattern compile = Pattern.compile(regex);
+
+    int count =  0 ;
+
+
 
     //确认加入爬取网址 和 取出结果的对象
     public void process(Page page) {
@@ -32,10 +42,18 @@ public class TestPiaoHuaProcessor  implements PageProcessor {
             page.addTargetRequests(page.getHtml().links().regex(URL_LIST).all());
         }else{
             //电影详情页
-            page.putField("title", page.getHtml().xpath("//*[@id=\"showinfo\"]/div[2]/div"));
+            page.putField("标题", page.getHtml().xpath("//*[@id=\"showinfo\"]/div[2]/text()"));
 
-            Selectable xpath = page.getHtml().xpath("//*[@id=\"showinfo\"]/table[1]");
 
+           String url  =  page.getHtml().xpath("//*[@id=\"showinfo\"]/table[1]/tbody/tr").toString();
+
+            //比较器对象
+            Matcher matcher = compile.matcher(url);
+            if (matcher.find()){
+                page.putField("下载地址",matcher.group());
+            }
+
+            System.out.println("爬取="+count+++"次");
 
         }
     }
