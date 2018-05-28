@@ -1,6 +1,8 @@
 package com.cxyhome.webmagic.mybaties;
 
+import com.cxyhome.webmagic.domain.Trademark;
 import com.cxyhome.webmagic.domain.User;
+import com.cxyhome.webmagic.mapper.TrademarkMapper;
 import com.cxyhome.webmagic.mapper.UserMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -19,9 +21,16 @@ public class Transfer {
 
         SqlSession session = sqlSessionFactory.openSession();
         try {
-            UserMapper mapper = session.getMapper(UserMapper.class);
-            User user = mapper.getUserById(1);
-            System.out.println(user);
+            TrademarkMapper mapper = session.getMapper(TrademarkMapper.class);
+            for (int i = 1; i <= 90440 ; i++) {
+                 Trademark trademark = mapper.getTrademarkById(i);
+                int result = mapper.insertTmClassificationInfo(trademark);
+                session.commit();
+
+            }
+
+
+
 
         } finally {
             session.close();

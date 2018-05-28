@@ -1,11 +1,9 @@
 package com.cxyhome.webmagic.mapper;
 
 import com.cxyhome.webmagic.domain.User;
-import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-@Mapper
 public interface UserMapper {
 
-//  @Select("SELECT * FROM tm_user WHERE id = #{id}")
-  User getUserById(int id);
+  User getUserById(@Param("id") int id);
 }
