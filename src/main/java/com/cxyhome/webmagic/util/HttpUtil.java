@@ -1,20 +1,11 @@
 package com.cxyhome.webmagic.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
+import com.alibaba.fastjson.JSONObject;
+import com.cxyhome.webmagic.dataobject.ProxyKV;
+import com.cxyhome.webmagic.dataobject.ProxyObj;
+import org.apache.http.*;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -27,6 +18,18 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
+import org.junit.Test;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static com.alibaba.fastjson.JSON.parseObject;
 
 /**
  * @author 马弦
@@ -36,6 +39,7 @@ import org.apache.log4j.Logger;
 public class HttpUtil {
 
     private static Logger logger = Logger.getLogger(HttpUtil.class);
+
 
     /**
      * get请求
@@ -125,6 +129,7 @@ public class HttpUtil {
      * @param params
      * @return
      */
+    @Test
     public static String doPost(String url, String params) throws Exception {
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -170,4 +175,146 @@ public class HttpUtil {
         return null;
     }
 
+    //共享的代理对象
+    static  HttpHost proxy = null;
+
+    public static  RequestConfig getRequestConfig(){
+
+        if (proxy==null){
+            String getProxyUrl = "http://piping.mogumiao.com/proxy/api/get_ip_al?appKey=492fb0fc865646cba9b6798b4093f7ff&count=1&expiryDate=0&format=1&newLine=2";
+            String result = HttpUtil.doGet(getProxyUrl);
+            ProxyKV proxyKV = parseObject(result, ProxyObj.class).getMsg().get(0);
+            //IP代理
+            proxy = new HttpHost(proxyKV.getIp(),proxyKV.getPort(),null);
+        }
+        //设置IP代理
+        RequestConfig requestConfig=RequestConfig.custom()
+                .setConnectTimeout(5000)
+                .setSocketTimeout(5000)
+                .setProxy(proxy)
+                .build();
+        return  requestConfig;
+    }
+
+    /**
+     * 权大师 请求（用于请求json格式的参数）
+     * @param url
+     * @param params
+     * @return
+     */
+    public static String doQuanDaShiH5DetailPost(String url, String params,String dateId) throws Exception {
+
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+
+
+        HttpPost httpPost = new HttpPost(url);// 创建httpPost
+        //设置代理
+        httpPost.setConfig(getRequestConfig());
+        httpPost.setHeader("Accept", "application/json, text/javascript, */*; q=0.01");
+        httpPost.setHeader("Accept-Encoding","gzip, deflate");
+        httpPost.setHeader("Accept-Language","zh-CN,zh;q=0.9");
+        httpPost.setHeader("Content-Type","486");
+        httpPost.setHeader("Connection","Keep-Alive");
+        httpPost.setHeader("Content-Type", "application/json;charset=UTF-8");
+//        httpPost.setHeader("Proxy-Connection","Keep-Alive");
+        httpPost.setHeader("Host","39.107.156.86:8888");
+        httpPost.setHeader("Origin","http://h5.quandashi.com");
+
+        httpPost.setHeader("Referer","http://h5.quandashi.com/search/searchDetail.html?id="+dateId);
+//        httpPost.setHeader("Referer","http://h5.quandashi.com/search/search.html?search_text=100001&pageSize=10&page=0&name=name");
+        httpPost.setHeader("User-Agent","Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Mobile Safari/537.36");
+        String charSet = "UTF-8";
+        StringEntity entity = new StringEntity(params, charSet);
+        httpPost.setEntity(entity);
+        CloseableHttpResponse response = null;
+        try {
+            response = httpclient.execute(httpPost);
+            StatusLine status = response.getStatusLine();
+            int state = status.getStatusCode();
+            if (state == HttpStatus.SC_OK) {
+                HttpEntity responseEntity = response.getEntity();
+                String jsonString = EntityUtils.toString(responseEntity);
+                return jsonString;
+            }
+            else{
+                logger.error("请求返回:"+state+"("+url+")");
+            }
+        }
+        finally {
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                httpclient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * 权大师 列表页
+     * @param url
+     * @param params
+     * @return
+     * @throws Exception
+     */
+    public static String doQuanDaShiH5ListPost(String url, String params,String key) throws Exception {
+
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);// 创建httpPost
+        //设置IP代理
+        httpPost.setConfig(getRequestConfig());
+
+        httpPost.setHeader("Accept","application/json, text/javascript, */*; q=0.01");
+        httpPost.setHeader("Accept-Encoding","gzip, deflate");
+        httpPost.setHeader("Accept-Language","zh-CN,zh;q=0.9");
+
+        httpPost.setHeader("Content-Type","application/json;charset=UTF-8");
+        httpPost.setHeader("Host","39.107.156.86:8888");
+        httpPost.setHeader("Origin","http://h5.quandashi.com");
+        httpPost.setHeader("Proxy-Connection","keep-alive");
+        httpPost.setHeader("Referer","http://h5.quandashi.com/search/search.html?search_text="+key+"+&pageSize=10&page=0&name=name");
+        httpPost.setHeader("User-Agent","Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Mobile Safari/537.36");
+
+
+        String charSet = "UTF-8";
+        StringEntity entity = new StringEntity(params, charSet);
+        httpPost.setEntity(entity);
+        CloseableHttpResponse response = null;
+        try {
+            response = httpclient.execute(httpPost);
+            StatusLine status = response.getStatusLine();
+            int state = status.getStatusCode();
+            if (state == HttpStatus.SC_OK) {
+                HttpEntity responseEntity = response.getEntity();
+                String jsonString = EntityUtils.toString(responseEntity);
+                return jsonString;
+            }
+            else{
+                logger.error("请求返回:"+state+"("+url+")");
+            }
+        }
+        finally {
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                httpclient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 }

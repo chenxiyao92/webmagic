@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 配置包扫描 -->
+    <typeAliases>
+        <package name="com.cxyhome.webmagic.domain"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/trademark"/>
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <!-- 使用相对于类路径的资源引用 -->
+    <mappers>
+        <mapper resource="mybaties/UserMapper.xml"/>
+    </mappers>
+
+    <!--&lt;!&ndash; 将包内的映射器接口实现全部注册为映射器 &ndash;&gt;-->
+    <!--<mappers>-->
+        <!--<package name="com.cxyhome.webmagic.mapper"/>-->
+    <!--</mappers>-->
+
+</configuration>

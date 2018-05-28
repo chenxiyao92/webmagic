@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cxyhome.webmagic.mapper.UserMapper">
+
+
+        <resultMap id="user" type="com.cxyhome.webmagic.domain.User">
+
+
+        </resultMap>
+
+        <select id="getUserById" resultType="user">
+            select * from tb_trademark where id = #{id}
+         </select>
+
+</mapper>
