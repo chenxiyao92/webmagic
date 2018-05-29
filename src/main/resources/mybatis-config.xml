@@ -28,7 +28,6 @@
 
     <!-- 使用相对于类路径的资源引用 -->
     <mappers>
-            <mapper resource="com/cxyhome/webmagic/mapper/UserMapper.xml"/>
             <mapper resource="com/cxyhome/webmagic/mapper/TrademarkMapper.xml"/>
     </mappers>
 

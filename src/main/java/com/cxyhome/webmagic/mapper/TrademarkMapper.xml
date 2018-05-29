@@ -11,8 +11,42 @@
          </select>
 
 
-        <insert id="insertTmClassificationInfo" parameterType="Trademark">
-          insert  into tm_info(id,mid) values (#{trademark.id},#{trademark.id});
+
+        <insert id="insertInfo" parameterType="TmInfo">
+          insert  into tm_info(id,mid,img_addr,mark,serial_number,classification_info,registration_number,filing_date,international_classes,
+          applicant_name,applicant_name_en,applicant_address,applicant_address_en,first_publication_number,published_opposition_date,
+          registration_publication_number,registration_date,multiple_owners,register_type,possession_term_start,possession_term_end,mark_type,
+          international_registration_date,late_specified_date,priority_date,correspondent,brand_status)
+          values (null ,null ,#{tmInfo.imgAddr},#{tmInfo.mark},#{tmInfo.serialNumber},#{tmInfo.classificationInfo},#{tmInfo.registrationNumber},#{tmInfo.filingDate},#{tmInfo.internationalClasses}
+          ,#{tmInfo.applicantName},#{tmInfo.applicantNameEn},#{tmInfo.applicantAddress},#{tmInfo.applicantAddressEn},#{tmInfo.firstPublicationNumber},#{tmInfo.publishedOppositionDate}
+          ,#{tmInfo.registrationPublicationNumber},#{tmInfo.registrationDate} ,#{tmInfo.multipleOwners},#{tmInfo.registerType} ,#{tmInfo.possessionTermStart},#{tmInfo.possessionTermEnd} ,#{tmInfo.markType}
+          ,#{tmInfo.internationalRegistrationDate},#{tmInfo.lateSpecifiedDate},#{tmInfo.priorityDate},#{tmInfo.correspondent},#{tmInfo.brandStatus});
         </insert>
+
+
+        <insert id="insertClassificationInfo" parameterType="TmClassificationInfo">
+            insert  into tm_classification_info()
+            values ();
+        </insert>
+
+        <insert id="insertInternationalClasses" parameterType="TmInternationalClasses">
+          insert into tm_international_classes()
+          values ();
+        </insert>
+
+        <insert id="inserProcessState" parameterType="TmProcessState">
+
+        </insert>
+
+
+
+        <insert id="insertToTrademark" parameterType="Trademark">
+            insert into tb_trademark_test
+            values (null ,#{trademark.id},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},2,
+            #{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},
+            #{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number}, #{trademark.number}
+            )
+        </insert>
+
 
 </mapper>

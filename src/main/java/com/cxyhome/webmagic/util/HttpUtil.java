@@ -10,6 +10,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -56,6 +57,38 @@ public class HttpUtil {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 /**读取服务器返回过来的json字符串数据**/
                 String strResult = EntityUtils.toString(response.getEntity());
+
+                return strResult;
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * 通过代理发送get请求
+     * @return
+     */
+    public static String ProxydoGet(String url) {
+        try {
+            HttpClient client = new DefaultHttpClient();
+            //发送get请求
+            HttpGet request = new HttpGet(url);
+            RequestConfig config = getRequestConfig();
+            HttpHost proxy = new HttpHost(config.getProxy().getHostName(), config.getProxy().getPort());
+            System.out.println("代理ip地址是"+config.getProxy().getHostName()+",代理端口为"+config.getProxy().getPort());
+            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+
+            HttpResponse response = client.execute(request);
+
+            /**请求发送成功，并得到响应**/
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                /**读取服务器返回过来的json字符串数据**/
+                String strResult = EntityUtils.toString(response.getEntity(),"gb2312");
 
                 return strResult;
             }
@@ -131,10 +164,8 @@ public class HttpUtil {
      */
     @Test
     public static String doPost(String url, String params) throws Exception {
-
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);// 创建httpPost
-
         httpPost.setHeader("Accept", "application/json");
         httpPost.setHeader("Content-Type", "application/json");
         httpPost.setHeader("Accept-Encoding","gzip");
@@ -179,7 +210,6 @@ public class HttpUtil {
     static  HttpHost proxy = null;
 
     public static  RequestConfig getRequestConfig(){
-
         if (proxy==null){
             String getProxyUrl = "http://piping.mogumiao.com/proxy/api/get_ip_al?appKey=492fb0fc865646cba9b6798b4093f7ff&count=1&expiryDate=0&format=1&newLine=2";
             String result = HttpUtil.doGet(getProxyUrl);
@@ -208,8 +238,14 @@ public class HttpUtil {
 
 
         HttpPost httpPost = new HttpPost(url);// 创建httpPost
+
         //设置代理
-        httpPost.setConfig(getRequestConfig());
+        RequestConfig config = getRequestConfig();
+        HttpHost proxy = new HttpHost(config.getProxy().getHostName(), config.getProxy().getPort());
+        System.out.println("代理ip地址是"+config.getProxy().getHostName()+",代理端口为"+config.getProxy().getPort());
+        httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+
+
         httpPost.setHeader("Accept", "application/json, text/javascript, */*; q=0.01");
         httpPost.setHeader("Accept-Encoding","gzip, deflate");
         httpPost.setHeader("Accept-Language","zh-CN,zh;q=0.9");
@@ -270,7 +306,12 @@ public class HttpUtil {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);// 创建httpPost
         //设置IP代理
-        httpPost.setConfig(getRequestConfig());
+        //设置代理
+        RequestConfig config = getRequestConfig();
+        HttpHost proxy = new HttpHost(config.getProxy().getHostName(), config.getProxy().getPort());
+        System.out.println("代理ip地址是"+config.getProxy().getHostName()+",代理端口为"+config.getProxy().getPort());
+        httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+
 
         httpPost.setHeader("Accept","application/json, text/javascript, */*; q=0.01");
         httpPost.setHeader("Accept-Encoding","gzip, deflate");

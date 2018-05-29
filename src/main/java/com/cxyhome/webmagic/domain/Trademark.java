@@ -1,6 +1,7 @@
 package com.cxyhome.webmagic.domain;
 
 
+
 public class Trademark {
 
     private long id;
@@ -31,38 +32,20 @@ public class Trademark {
     private String brandStatus;
     private String brandProcedure;
 
+    public String getPossessionTermStart(){
+        String brandExpired = getBrandExpired();
+        if (brandExpired!=null && brandExpired.length()>0){
+            return brandExpired.substring(0,11);
+        }
+       return  null;
+    }
 
-    @Override
-    public String toString() {
-        return "Trademark{" +
-                "id=" + id +
-                ", number='" + number + '\'' +
-                ", title='" + title + '\'' +
-                ", productList='" + productList + '\'' +
-                ", related='" + related + '\'' +
-                ", applyDate='" + applyDate + '\'' +
-                ", i18NType='" + i18NType + '\'' +
-                ", thumbnail='" + thumbnail + '\'' +
-                ", applicantZh='" + applicantZh + '\'' +
-                ", applicantEn='" + applicantEn + '\'' +
-                ", applicantAddrZh='" + applicantAddrZh + '\'' +
-                ", applicantAddrEn='" + applicantAddrEn + '\'' +
-                ", review1StCode='" + review1StCode + '\'' +
-                ", review1StDate='" + review1StDate + '\'' +
-                ", registerCode='" + registerCode + '\'' +
-                ", registerDate='" + registerDate + '\'' +
-                ", brandShared='" + brandShared + '\'' +
-                ", sharedList='" + sharedList + '\'' +
-                ", brandType='" + brandType + '\'' +
-                ", brandExpired='" + brandExpired + '\'' +
-                ", brandForm='" + brandForm + '\'' +
-                ", i18NRegisterDate='" + i18NRegisterDate + '\'' +
-                ", targetDate='" + targetDate + '\'' +
-                ", priorityDate='" + priorityDate + '\'' +
-                ", agentName='" + agentName + '\'' +
-                ", brandStatus='" + brandStatus + '\'' +
-                ", brandProcedure='" + brandProcedure + '\'' +
-                '}';
+    public String getPossessionTermEnd(){
+        String brandExpired = getBrandExpired();
+        if (brandExpired!=null && brandExpired.length()>0){
+            return brandExpired.substring(12);
+        }
+        return  null;
     }
 
     public long getId() {
