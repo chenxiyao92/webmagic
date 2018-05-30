@@ -234,17 +234,12 @@ public class HttpUtil {
      */
     public static String doQuanDaShiH5DetailPost(String url, String params,String dateId) throws Exception {
 
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-
-
         HttpPost httpPost = new HttpPost(url);// 创建httpPost
-
         //设置代理
         RequestConfig config = getRequestConfig();
-        HttpHost proxy = new HttpHost(config.getProxy().getHostName(), config.getProxy().getPort());
         System.out.println("代理ip地址是"+config.getProxy().getHostName()+",代理端口为"+config.getProxy().getPort());
-        httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
 
+        CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(config).build();
 
         httpPost.setHeader("Accept", "application/json, text/javascript, */*; q=0.01");
         httpPost.setHeader("Accept-Encoding","gzip, deflate");
@@ -260,7 +255,7 @@ public class HttpUtil {
 //        httpPost.setHeader("Referer","http://h5.quandashi.com/search/search.html?search_text=100001&pageSize=10&page=0&name=name");
         httpPost.setHeader("User-Agent","Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Mobile Safari/537.36");
         String charSet = "UTF-8";
-        StringEntity entity = new StringEntity(params, charSet);
+            StringEntity entity = new StringEntity(params, charSet);
         httpPost.setEntity(entity);
         CloseableHttpResponse response = null;
         try {
@@ -303,14 +298,12 @@ public class HttpUtil {
      */
     public static String doQuanDaShiH5ListPost(String url, String params,String key) throws Exception {
 
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);// 创建httpPost
         //设置IP代理
-        //设置代理
         RequestConfig config = getRequestConfig();
-        HttpHost proxy = new HttpHost(config.getProxy().getHostName(), config.getProxy().getPort());
         System.out.println("代理ip地址是"+config.getProxy().getHostName()+",代理端口为"+config.getProxy().getPort());
-        httpclient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
+        //实例化CloseableHttpClient对象
+        CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(config).build();
 
 
         httpPost.setHeader("Accept","application/json, text/javascript, */*; q=0.01");

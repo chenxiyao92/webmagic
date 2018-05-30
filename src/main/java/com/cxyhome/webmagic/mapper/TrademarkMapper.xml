@@ -23,19 +23,22 @@
           ,#{tmInfo.internationalRegistrationDate},#{tmInfo.lateSpecifiedDate},#{tmInfo.priorityDate},#{tmInfo.correspondent},#{tmInfo.brandStatus});
         </insert>
 
-
+        <!-- 类似群信息 -->
         <insert id="insertClassificationInfo" parameterType="TmClassificationInfo">
-            insert  into tm_classification_info()
-            values ();
+            insert  into tm_classification_info(id,product_name,international_classes)
+            values (#{classificationInfo.id},#{classificationInfo.productName},#{classificationInfo.internationalClasses});
         </insert>
 
+        <!-- 国际分类编号 -->
         <insert id="insertInternationalClasses" parameterType="TmInternationalClasses">
-          insert into tm_international_classes()
-          values ();
+          insert into tm_international_classes(id,description)
+          values (#{internationalClasses.id},#{internationalClasses.description});
         </insert>
 
-        <insert id="inserProcessState" parameterType="TmProcessState">
-
+        <!-- 商标状态表 -->
+        <insert id="insertProcessState" parameterType="TmProcessState">
+           insert into tm_process_state(id,mark,serial_number,international_classes,brand_process_state)
+           values (null ,#{processState.mark},#{processState.serialNumber},#{processState.internationalClasses},#{processState.brandProcessState});
         </insert>
 
 

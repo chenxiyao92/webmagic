@@ -1,7 +1,10 @@
 package com.cxyhome.webmagic.dao;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cxyhome.webmagic.domain.TmInfo;
+import com.cxyhome.webmagic.domain.TmProcessState;
 import com.cxyhome.webmagic.domain.Trademark;
+import com.cxyhome.webmagic.domain.TrademarkProcessState;
 import com.cxyhome.webmagic.mapper.TrademarkMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -12,13 +15,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.UUID;
 
 public class Transfer {
 
     public static void main(String[] args) throws IOException, ParseException {
-        trademarkToTradeInfo();
+//        trademarkToTradeInfo();
 //            insertToTrademark();
+            trademarkToProcessState();
     }
 
     private static  void insertToTrademark() throws IOException {
@@ -94,8 +99,6 @@ public class Transfer {
                     tmInfo.setPossessionTermStart(null);
                     tmInfo.setPossessionTermEnd(null);
                 }
-
-
                 tmInfo.setMarkType(trademark.getBrandForm());
                 if (trademark.getI18NRegisterDate()!=null && trademark.getI18NRegisterDate().length()>0){
                  tmInfo.setInternationalRegistrationDate(sdf.parse(trademark.getI18NRegisterDate()));
@@ -123,5 +126,33 @@ public class Transfer {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         return sqlSessionFactory.openSession();
+    }
+
+
+    private static void trademarkToProcessState() throws IOException, ParseException {
+        SqlSession session = getSqlSession();
+        TrademarkMapper mapper = session.getMapper(TrademarkMapper.class);
+        TmProcessState processState = new TmProcessState();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+        for (int i = 1; i <= 90440 ; i++) {
+            Trademark trademark = mapper.getTrademarkById(i);
+            processState.setId(null);
+            processState.setMark(trademark.getTitle());
+            if (trademark.getI18NType()!=null && trademark.getI18NType().length()>0){
+                processState.setInternationalClasses(Long.parseLong(trademark.getI18NType()));
+            }else {
+                processState.setInternationalClasses(null);
+            }
+            processState.setSerialNumber(trademark.getNumber());
+            processState.setBrandProcessState(trademark.getBrandProcedure());
+            mapper.insertProcessState(processState);
+            if (i%100 == 0){
+                session.commit();
+            }
+        }
+
+
+
+
     }
 }

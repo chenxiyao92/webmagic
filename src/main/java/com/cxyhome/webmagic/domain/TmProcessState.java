@@ -1,25 +1,38 @@
 package com.cxyhome.webmagic.domain;
 
+import java.util.Date;
+
 public class TmProcessState {
 
-  private long id;
+  /**
+   * 序列号
+   */
+  private Long id;
+  /**
+   * 商标名称
+   */
   private String mark;
-  private long serialNumber;
-  private long internationalClasses;
-  private String processName;
-  private String segmentName;
-  private String conclusion;
-  private java.sql.Date conclusionDate;
+  /**
+   * 注册号
+   */
+  private String serialNumber;
+  /**
+   * 国际分类
+   */
+  private Long internationalClasses;
 
+  /**
+   * 商标流程 存储为json格式
+   */
+  private String brandProcessState;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
-
 
   public String getMark() {
     return mark;
@@ -29,58 +42,27 @@ public class TmProcessState {
     this.mark = mark;
   }
 
-
-  public long getSerialNumber() {
+  public String getSerialNumber() {
     return serialNumber;
   }
 
-  public void setSerialNumber(long serialNumber) {
+  public void setSerialNumber(String serialNumber) {
     this.serialNumber = serialNumber;
   }
 
-
-  public long getInternationalClasses() {
+  public Long getInternationalClasses() {
     return internationalClasses;
   }
 
-  public void setInternationalClasses(long internationalClasses) {
+  public void setInternationalClasses(Long internationalClasses) {
     this.internationalClasses = internationalClasses;
   }
 
-
-  public String getProcessName() {
-    return processName;
+  public String getBrandProcessState() {
+    return brandProcessState;
   }
 
-  public void setProcessName(String processName) {
-    this.processName = processName;
+  public void setBrandProcessState(String brandProcessState) {
+    this.brandProcessState = brandProcessState;
   }
-
-
-  public String getSegmentName() {
-    return segmentName;
-  }
-
-  public void setSegmentName(String segmentName) {
-    this.segmentName = segmentName;
-  }
-
-
-  public String getConclusion() {
-    return conclusion;
-  }
-
-  public void setConclusion(String conclusion) {
-    this.conclusion = conclusion;
-  }
-
-
-  public java.sql.Date getConclusionDate() {
-    return conclusionDate;
-  }
-
-  public void setConclusionDate(java.sql.Date conclusionDate) {
-    this.conclusionDate = conclusionDate;
-  }
-
 }
