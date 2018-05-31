@@ -12,9 +12,10 @@ public class QuanDaShiH5List {
 
     static Pattern pattern = Pattern.compile("id:");
 
+
+
+
     public static String queryByKeyword(String key) {
-
-
         JSONObject param = new JSONObject();
         param.put("appKey", "quandashi2151283371");
         param.put("executor", "5a32564d76707a34576e377a4a6a64536f4c737133673d3d");
@@ -46,6 +47,7 @@ public class QuanDaShiH5List {
         try {
             //详情页json解析
             String date = HttpUtil.doQuanDaShiH5ListPost("http://39.107.156.86:8888/api",param.toJSONString(),key);
+            System.out.println(date);
             JsonRootBean jsonRootBean = JSONObject.parseObject(date, JsonRootBean.class);
             return jsonRootBean.getData().getItems().get(0).getId();
         } catch (Exception e) {

@@ -1,8 +1,6 @@
 package com.cxyhome.webmagic.domain;
 
-import java.util.Date;
-
-public class TmProcessState {
+public class ProcessState {
 
   /**
    * 序列号

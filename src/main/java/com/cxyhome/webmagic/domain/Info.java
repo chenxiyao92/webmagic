@@ -1,9 +1,14 @@
 package com.cxyhome.webmagic.domain;
 
 
-import java.util.Date;
 
-public class TmInfo {
+import com.cxyhome.webmagic.domain.quandashi.FlowList;
+import com.cxyhome.webmagic.domain.quandashi.GoodsList;
+
+import java.util.Date;
+import java.util.List;
+
+public class Info {
 
   private Long id;
   private Long mid;
@@ -32,10 +37,14 @@ public class TmInfo {
    * 申请日期
    */
   private Date filingDate;
+
+  private String showFilingDate;
   /**
    * 国际分类
    */
   private Integer internationalClasses;
+
+  private String internationalClassesZh;
   /**
    * 申请人名称（中文）
    */
@@ -61,6 +70,8 @@ public class TmInfo {
    初审公告日期
    */
   private Date publishedOppositionDate;
+
+  private String showPublishedOppositionDate;
   /**
    * 注册公告期号
    */
@@ -70,6 +81,7 @@ public class TmInfo {
    *注册公告日期
    */
   private Date registrationDate;
+  private  String showRegistrationDate;
   /**
    * 是否共有商标
    */
@@ -88,10 +100,12 @@ public class TmInfo {
    * 专用权期限开始
    */
   private Date possessionTermStart;
+  private String showPossessionTermStart;
   /**
    * 专用权期限结束
    */
   private Date possessionTermEnd;
+  private String showPossessionTermEnd;
   /**
    * 商标形式
    */
@@ -100,10 +114,12 @@ public class TmInfo {
    * 国际注册日期
    */
   private Date internationalRegistrationDate;
+  private String showInternationalRegistrationDate;
   /**
    * 后期指定日期
    */
   private Date  lateSpecifiedDate;
+  private String showLateSpecifiedDate;
   /**
    * 优先权日期
    */
@@ -118,6 +134,71 @@ public class TmInfo {
    */
   private String brandStatus;
 
+  private List<ClassificationInfo> classificationInfos;
+
+  private List<ProcessState> processStates;
+
+  /**
+   * TODO: 待定是否需要删除
+   */
+  private List<FlowList> flowLists;
+
+  /**
+   * TODO:待定是否需要
+   *
+   * @return
+   */
+  private List<GoodsList> goodsLists;
+
+  public List<GoodsList> getGoodsLists() {
+    return goodsLists;
+  }
+
+  public void setGoodsLists(List<GoodsList> goodsLists) {
+    this.goodsLists = goodsLists;
+  }
+
+  public List<FlowList> getFlowLists() {
+    return flowLists;
+  }
+
+  public void setFlowLists(List<FlowList> flowLists) {
+    this.flowLists = flowLists;
+  }
+
+  public List<ClassificationInfo> getClassificationInfos() {
+    return classificationInfos;
+  }
+
+  public void setClassificationInfos(List<ClassificationInfo> classificationInfos) {
+    this.classificationInfos = classificationInfos;
+  }
+
+  public List<ProcessState> getProcessStates() {
+    return processStates;
+  }
+
+  public void setProcessStates(List<ProcessState> processStates) {
+    this.processStates = processStates;
+  }
+
+  public String getInternationalClassesZh() {
+    return internationalClassesZh;
+  }
+
+  public void setInternationalClassesZh(String internationalClassesZh) {
+    this.internationalClassesZh = internationalClassesZh;
+  }
+
+  private List<ProcessState>  trademarkProcessStates;
+
+  public List<ProcessState> getTrademarkProcessStates() {
+    return trademarkProcessStates;
+  }
+
+  public void setTrademarkProcessStates(List<ProcessState> trademarkProcessStates) {
+    this.trademarkProcessStates = trademarkProcessStates;
+  }
 
   public Long getId() {
     return id;
@@ -341,5 +422,61 @@ public class TmInfo {
 
   public void setBrandStatus(String brandStatus) {
     this.brandStatus = brandStatus;
+  }
+
+  public String getShowFilingDate() {
+    return showFilingDate;
+  }
+
+  public void setShowFilingDate(String showFilingDate) {
+    this.showFilingDate = showFilingDate;
+  }
+
+  public String getShowPublishedOppositionDate() {
+    return showPublishedOppositionDate;
+  }
+
+  public void setShowPublishedOppositionDate(String showPublishedOppositionDate) {
+    this.showPublishedOppositionDate = showPublishedOppositionDate;
+  }
+
+  public String getShowRegistrationDate() {
+    return showRegistrationDate;
+  }
+
+  public void setShowRegistrationDate(String showRegistrationDate) {
+    this.showRegistrationDate = showRegistrationDate;
+  }
+
+  public String getShowPossessionTermStart() {
+    return showPossessionTermStart;
+  }
+
+  public void setShowPossessionTermStart(String showPossessionTermStart) {
+    this.showPossessionTermStart = showPossessionTermStart;
+  }
+
+  public String getShowPossessionTermEnd() {
+    return showPossessionTermEnd;
+  }
+
+  public void setShowPossessionTermEnd(String showPossessionTermEnd) {
+    this.showPossessionTermEnd = showPossessionTermEnd;
+  }
+
+  public String getShowInternationalRegistrationDate() {
+    return showInternationalRegistrationDate;
+  }
+
+  public void setShowInternationalRegistrationDate(String showInternationalRegistrationDate) {
+    this.showInternationalRegistrationDate = showInternationalRegistrationDate;
+  }
+
+  public String getShowLateSpecifiedDate() {
+    return showLateSpecifiedDate;
+  }
+
+  public void setShowLateSpecifiedDate(String showLateSpecifiedDate) {
+    this.showLateSpecifiedDate = showLateSpecifiedDate;
   }
 }

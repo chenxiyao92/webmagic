@@ -57,7 +57,6 @@ public class HttpUtil {
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 /**读取服务器返回过来的json字符串数据**/
                 String strResult = EntityUtils.toString(response.getEntity());
-
                 return strResult;
             }
         }
@@ -268,7 +267,7 @@ public class HttpUtil {
                 return jsonString;
             }
             else{
-                logger.error("请求返回:"+state+"("+url+")");
+//                logger.error("请求返回:"+state+"("+url+")");
             }
         }
         finally {
@@ -332,7 +331,7 @@ public class HttpUtil {
                 return jsonString;
             }
             else{
-                logger.error("请求返回:"+state+"("+url+")");
+//                logger.error("请求返回:"+state+"("+url+")");
             }
         }
         finally {

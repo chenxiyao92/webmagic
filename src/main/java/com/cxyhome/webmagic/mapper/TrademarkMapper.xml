@@ -17,10 +17,10 @@
           applicant_name,applicant_name_en,applicant_address,applicant_address_en,first_publication_number,published_opposition_date,
           registration_publication_number,registration_date,multiple_owners,register_type,possession_term_start,possession_term_end,mark_type,
           international_registration_date,late_specified_date,priority_date,correspondent,brand_status)
-          values (null ,null ,#{tmInfo.imgAddr},#{tmInfo.mark},#{tmInfo.serialNumber},#{tmInfo.classificationInfo},#{tmInfo.registrationNumber},#{tmInfo.filingDate},#{tmInfo.internationalClasses}
-          ,#{tmInfo.applicantName},#{tmInfo.applicantNameEn},#{tmInfo.applicantAddress},#{tmInfo.applicantAddressEn},#{tmInfo.firstPublicationNumber},#{tmInfo.publishedOppositionDate}
-          ,#{tmInfo.registrationPublicationNumber},#{tmInfo.registrationDate} ,#{tmInfo.multipleOwners},#{tmInfo.registerType} ,#{tmInfo.possessionTermStart},#{tmInfo.possessionTermEnd} ,#{tmInfo.markType}
-          ,#{tmInfo.internationalRegistrationDate},#{tmInfo.lateSpecifiedDate},#{tmInfo.priorityDate},#{tmInfo.correspondent},#{tmInfo.brandStatus});
+          values (null ,null ,#{info.imgAddr},#{info.mark},#{info.serialNumber},#{info.classificationInfo},#{info.registrationNumber},#{info.filingDate},#{info.internationalClasses}
+          ,#{info.applicantName},#{info.applicantNameEn},#{info.applicantAddress},#{info.applicantAddressEn},#{info.firstPublicationNumber},#{info.publishedOppositionDate}
+          ,#{info.registrationPublicationNumber},#{info.registrationDate} ,#{info.multipleOwners},#{info.registerType} ,#{info.possessionTermStart},#{info.possessionTermEnd} ,#{info.markType}
+          ,#{info.internationalRegistrationDate},#{info.lateSpecifiedDate},#{info.priorityDate},#{info.correspondent},#{info.brandStatus});
         </insert>
 
         <!-- 类似群信息 -->

@@ -1,7 +1,7 @@
 package com.cxyhome.webmagic.domain;
 
 
-public class TmClassificationInfo {
+public class ClassificationInfo {
 
   private long id;
   private String productName;

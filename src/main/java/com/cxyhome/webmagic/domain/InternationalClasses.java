@@ -1,6 +1,6 @@
 package com.cxyhome.webmagic.domain;
 
-public class TmInternationalClasses {
+public class InternationalClasses {
 
   private long id;
   private String description;

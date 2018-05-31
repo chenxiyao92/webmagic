@@ -1,20 +1,16 @@
 package com.cxyhome.webmagic.quandashi;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cxyhome.webmagic.domain.quandashi.QuanDaShiTrademarkInfo;
 import com.cxyhome.webmagic.util.HttpUtil;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class QuanDaShiH5Detail {
 
 
 
-
-
-
-    public static String queryById(String id) {
+    public static QuanDaShiTrademarkInfo queryById(String id) {
 
         JSONObject param = new JSONObject();
         param.put("appKey","quandashi2151283371");
@@ -45,7 +41,8 @@ public class QuanDaShiH5Detail {
         try {
             //详情页json解析
             String date = HttpUtil.doQuanDaShiH5DetailPost("http://39.107.156.86:8888/api",param.toJSONString(),id);
-            return  date;
+            QuanDaShiTrademarkInfo quanDaShiTrademarkInfo = JSONObject.parseObject(date, QuanDaShiTrademarkInfo.class);
+            return quanDaShiTrademarkInfo;
         } catch (Exception e) {
             e.printStackTrace();
         }

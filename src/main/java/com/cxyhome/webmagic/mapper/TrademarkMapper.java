@@ -7,13 +7,13 @@ public interface TrademarkMapper {
 
     Trademark getTrademarkById(@Param("id") int id);
 
-    int insertInfo(@Param("tmInfo")TmInfo tmInfo);
+    int insertInfo(@Param("info")Info info);
 
     int insertToTrademark(@Param("trademark")Trademark trademark);
 
-    int insertProcessState(@Param("processState")TmProcessState processState);
+    int insertProcessState(@Param("processState")ProcessState processState);
 
-    int insertInternationalClasses(@Param("internationalClasses")TmInternationalClasses internationalClasses);
+    int insertInternationalClasses(@Param("internationalClasses")InternationalClasses internationalClasses);
 
-    int insertClassificationInfo(@Param("internationalClasses")TmClassificationInfo classificationInfo);
+    int insertClassificationInfo(@Param("internationalClasses")ClassificationInfo classificationInfo);
 }

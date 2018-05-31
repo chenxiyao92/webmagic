@@ -1,10 +1,8 @@
 package com.cxyhome.webmagic.dao;
 
-import com.alibaba.fastjson.JSONObject;
-import com.cxyhome.webmagic.domain.TmInfo;
-import com.cxyhome.webmagic.domain.TmProcessState;
+import com.cxyhome.webmagic.domain.Info;
+import com.cxyhome.webmagic.domain.ProcessState;
 import com.cxyhome.webmagic.domain.Trademark;
-import com.cxyhome.webmagic.domain.TrademarkProcessState;
 import com.cxyhome.webmagic.mapper.TrademarkMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -15,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,7 +25,7 @@ public class Transfer {
             trademarkToProcessState();
     }
 
-    private static  void insertToTrademark() throws IOException {
+    public static  void insertToTrademark() throws IOException {
         //设置自动提交
         SqlSession session = getSqlSession();
         Trademark trademark = new Trademark();
@@ -45,7 +44,7 @@ public class Transfer {
 
 
 
-    private static void trademarkToTradeInfo() throws IOException, ParseException {
+    public static void trademarkToTradeInfo() throws IOException, ParseException {
         SqlSession session = getSqlSession();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         try {
@@ -53,67 +52,67 @@ public class Transfer {
             for (int i = 1; i <= 90440 ; i++) {
                 Trademark trademark = mapper.getTrademarkById(i);
                 //申请日期
-                TmInfo tmInfo = new TmInfo();
-                tmInfo.setId(null);
-                tmInfo.setMid(null);
-                tmInfo.setImgAddr(trademark.getThumbnail());
-                tmInfo.setMark(trademark.getTitle());
-                tmInfo.setSerialNumber(trademark.getNumber());
-                tmInfo.setClassificationInfo(trademark.getRelated());
-                tmInfo.setRegistrationNumber(trademark.getNumber());
+                Info info = new Info();
+                info.setId(null);
+                info.setMid(null);
+                info.setImgAddr(trademark.getThumbnail());
+                info.setMark(trademark.getTitle());
+                info.setSerialNumber(trademark.getNumber());
+                info.setClassificationInfo(trademark.getRelated());
+                info.setRegistrationNumber(trademark.getNumber());
 
                 if (trademark.getApplyDate()!=null &&  trademark.getApplyDate().length()>0){
-                    tmInfo.setFilingDate(sdf.parse(trademark.getApplyDate()));
+                    info.setFilingDate(sdf.parse(trademark.getApplyDate()));
                 }else {
-                    tmInfo.setFilingDate(null);
+                    info.setFilingDate(null);
                 }
                 if (trademark.getI18NType()!=null && trademark.getI18NType().length()>0){
-                    tmInfo.setInternationalClasses(Integer.parseInt(trademark.getI18NType()));
+                    info.setInternationalClasses(Integer.parseInt(trademark.getI18NType()));
                 }else {
-                    tmInfo.setInternationalClasses(null);
+                    info.setInternationalClasses(null);
                 }
-                tmInfo.setApplicantName(trademark.getApplicantZh());
-                tmInfo.setApplicantNameEn(trademark.getApplicantAddrEn());
-                tmInfo.setApplicantAddress(trademark.getApplicantAddrZh());
-                tmInfo.setApplicantAddressEn(trademark.getApplicantAddrEn());
+                info.setApplicantName(trademark.getApplicantZh());
+                info.setApplicantNameEn(trademark.getApplicantAddrEn());
+                info.setApplicantAddress(trademark.getApplicantAddrZh());
+                info.setApplicantAddressEn(trademark.getApplicantAddrEn());
 
                 if (trademark.getReview1StCode()!=null && trademark.getReview1StCode().length()>0){
-                    tmInfo.setFirstPublicationNumber(Integer.parseInt(trademark.getReview1StCode()));
+                    info.setFirstPublicationNumber(Integer.parseInt(trademark.getReview1StCode()));
                 }else {
-                    tmInfo.setFirstPublicationNumber(null);
+                    info.setFirstPublicationNumber(null);
                 }
 
                 if (trademark.getReview1StDate()!=null &&  trademark.getReview1StDate().length()>0){
-                    tmInfo.setPublishedOppositionDate(sdf.parse(trademark.getReview1StDate()));
+                    info.setPublishedOppositionDate(sdf.parse(trademark.getReview1StDate()));
                 }else{
-                    tmInfo.setPublishedOppositionDate(null);
+                    info.setPublishedOppositionDate(null);
                 }
-                tmInfo.setIsMultipleOwners(trademark.getBrandShared());
-                tmInfo.setMultipleOwners(trademark.getSharedList());
-                tmInfo.setRegisterType(trademark.getBrandType());
+                info.setIsMultipleOwners(trademark.getBrandShared());
+                info.setMultipleOwners(trademark.getSharedList());
+                info.setRegisterType(trademark.getBrandType());
 
                 if (trademark.getBrandExpired()==null && trademark.getBrandExpired().length()>0){
-                tmInfo.setPossessionTermStart(sdf.parse(trademark.getPossessionTermStart()));
-                tmInfo.setPossessionTermEnd(sdf.parse(trademark.getPossessionTermEnd()));
+                info.setPossessionTermStart(sdf.parse(trademark.getPossessionTermStart()));
+                info.setPossessionTermEnd(sdf.parse(trademark.getPossessionTermEnd()));
                 }else {
-                    tmInfo.setPossessionTermStart(null);
-                    tmInfo.setPossessionTermEnd(null);
+                    info.setPossessionTermStart(null);
+                    info.setPossessionTermEnd(null);
                 }
-                tmInfo.setMarkType(trademark.getBrandForm());
+                info.setMarkType(trademark.getBrandForm());
                 if (trademark.getI18NRegisterDate()!=null && trademark.getI18NRegisterDate().length()>0){
-                 tmInfo.setInternationalRegistrationDate(sdf.parse(trademark.getI18NRegisterDate()));
+                 info.setInternationalRegistrationDate(sdf.parse(trademark.getI18NRegisterDate()));
                 }else {
-                    tmInfo.setInternationalRegistrationDate(null);
+                    info.setInternationalRegistrationDate(null);
                 }
                 if (trademark.getTargetDate() != null && trademark.getTargetDate().length()>0){
-                  tmInfo.setLateSpecifiedDate(sdf.parse(trademark.getTargetDate()));
+                  info.setLateSpecifiedDate(sdf.parse(trademark.getTargetDate()));
                 }else {
-                    tmInfo.setLateSpecifiedDate(null);
+                    info.setLateSpecifiedDate(null);
                 }
-                tmInfo.setPriorityDate(trademark.getPriorityDate());
-                tmInfo.setCorrespondent(trademark.getAgentName());
-                tmInfo.setBrandStatus(trademark.getBrandStatus());
-                int result = mapper.insertInfo(tmInfo);
+                info.setPriorityDate(trademark.getPriorityDate());
+                info.setCorrespondent(trademark.getAgentName());
+                info.setBrandStatus(trademark.getBrandStatus());
+                int result = mapper.insertInfo(info);
                 session.commit();
             }
         } finally {
@@ -121,7 +120,7 @@ public class Transfer {
         }
     }
 
-    private static SqlSession getSqlSession() throws IOException {
+    public static SqlSession getSqlSession() throws IOException {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -129,10 +128,10 @@ public class Transfer {
     }
 
 
-    private static void trademarkToProcessState() throws IOException, ParseException {
+    public static void trademarkToProcessState() throws IOException, ParseException {
         SqlSession session = getSqlSession();
         TrademarkMapper mapper = session.getMapper(TrademarkMapper.class);
-        TmProcessState processState = new TmProcessState();
+        ProcessState processState = new ProcessState();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         for (int i = 1; i <= 90440 ; i++) {
             Trademark trademark = mapper.getTrademarkById(i);
@@ -155,4 +154,34 @@ public class Transfer {
 
 
     }
+
+    /**
+     * 获取 trademark的url集合
+     * @return
+     * @throws IOException
+     */
+    public static List<String> getPicUrl() throws IOException {
+        SqlSession session = getSqlSession();
+        TrademarkMapper mapper = session.getMapper(TrademarkMapper.class);
+        List<String> list = new ArrayList<String>();
+        for (int i = 1; i <= 10000 ; i++) {
+            list.add(mapper.getTrademarkById(i).getThumbnail());
+        }
+        return list;
+    }
+
+
+    /**
+     * @return
+     * @throws IOException
+     */
+    public static List<String> quanDaShiToDB() throws IOException {
+        SqlSession session = getSqlSession();
+        TrademarkMapper mapper = session.getMapper(TrademarkMapper.class);
+        List<String> list = new ArrayList<String>();
+        return null;
+    }
+
+
+
 }
