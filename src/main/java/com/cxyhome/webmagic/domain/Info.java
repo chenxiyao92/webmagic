@@ -14,8 +14,15 @@ public class Info {
   private Long mid;
   /**
    * 商标图片地址
+   * 不能删除 需要访问下载图片
    */
   private String imgAddr;
+
+  /**
+   * 本地地址图片地址
+   */
+  private String localImageAddr;
+
   /**
    * 商标名称
    */
@@ -478,5 +485,15 @@ public class Info {
 
   public void setShowLateSpecifiedDate(String showLateSpecifiedDate) {
     this.showLateSpecifiedDate = showLateSpecifiedDate;
+  }
+
+
+  public String getLocalImageAddr() {
+    return localImageAddr;
+  }
+
+  public String setLocalImageAddr(String localImageAddr) {
+    this.localImageAddr = localImageAddr;
+    return localImageAddr;
   }
 }

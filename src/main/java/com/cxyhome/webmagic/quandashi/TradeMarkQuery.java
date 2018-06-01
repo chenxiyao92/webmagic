@@ -5,11 +5,15 @@ import com.cxyhome.webmagic.domain.Info;
 import com.cxyhome.webmagic.domain.quandashi.Data;
 import com.cxyhome.webmagic.domain.quandashi.FlowList;
 import com.cxyhome.webmagic.domain.quandashi.GoodsList;
+import com.cxyhome.webmagic.thread.PicDownloaderr;
+import com.cxyhome.webmagic.util.PicUtil;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TradeMarkQuery {
 
@@ -30,22 +34,41 @@ public class TradeMarkQuery {
         //        }
 
         List<String> list = new ArrayList<String>();
-//        list.add("762902");
-//        list.add("5126084");
-//        list.add("10973244");
-//        list.add("768070");
-//        list.add("768101");
-        list.add("20000000");
+        list.add("10674569");
+        list.add("11466043");
+        list.add("20714077");
+        list.add("15911056");
+        list.add("10979487");
+        list.add("22303238");
+        list.add("10563601");
+        list.add("10268550");
+        list.add("10674577");
+        list.add("10268562");
+        list.add("11284650");
+        list.add("10674571");
+        list.add("10414190");
+        list.add("19094124");
+        list.add("10268551");
         arrQuery(list);
     }
 
+    /**
+     * 同时下载url图片
+     * @param list
+     * @throws IOException
+     */
     public static void arrQuery(List<String> list) throws IOException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy--MM-dd");
+        ArrayList<String> urls = new ArrayList<String>();
         ArrayList objs = new ArrayList();
+        Map<String, String> urlMap = new HashMap<>();
         for (String id : list) {
             String dateId = QuanDaShiH5List.queryByKeyword(id);
             //权大师INFO对象
             Data data = QuanDaShiH5Detail.queryById(dateId).getData();
+            if (data ==null){
+                continue;
+            }
             Info info = new Info();
             if (data.getBrand().getLogoUrl() != null) {
                 info.setImgAddr(data.getBrand().getLogoUrl());
@@ -102,10 +125,14 @@ public class TradeMarkQuery {
 //            info.setBrandStatus(JSON.toJSONString(data.getNoticeList()));
             //权大师的流程对象
             List<FlowList> flowList = data.getFlowList();
-            for (FlowList f : flowList) {
-                f.setShowLastTime(sdf.format(f.getLastTime()));
-                f.setLastTime(null);
-                f.setCode(null);
+            if (flowList!=null && flowList.size()>0){
+                for (FlowList f : flowList) {
+                    if (f.getLastTime()!=null){
+                    f.setShowLastTime(sdf.format(f.getLastTime()));
+                    }
+                    f.setLastTime(null);
+                    f.setCode(null);
+                }
             }
             info.setFlowLists(flowList);
             List<GoodsList> goodsList = data.getGoodsList();
@@ -116,8 +143,16 @@ public class TradeMarkQuery {
                 g.setRepairCode(null);
             }
             info.setGoodsLists(goodsList);
+            //取出url 生成本地url
+//            urls.add(info.getImgAddr());
+            //生成本地访问的url
+            info.setLocalImageAddr(PicUtil.makeLocalImgAddr(info.getImgAddr(),"quandashi"));
+            //生成urlMap
+            urlMap.put(info.getImgAddr(), info.getLocalImageAddr());
             objs.add(info);
         }
+        //开启一个线程下载权大师的图片
+        new PicDownloaderr(urlMap).start();
         String result = JSON.toJSONString(objs);
         System.out.println(result);
     }

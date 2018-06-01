@@ -25,10 +25,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.alibaba.fastjson.JSON.parseObject;
 
@@ -52,7 +49,6 @@ public class HttpUtil {
             //发送get请求
             HttpGet request = new HttpGet(url);
             HttpResponse response = client.execute(request);
-
             /**请求发送成功，并得到响应**/
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 /**读取服务器返回过来的json字符串数据**/
@@ -63,7 +59,6 @@ public class HttpUtil {
         catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -74,28 +69,21 @@ public class HttpUtil {
      */
     public static String ProxydoGet(String url) {
         try {
-            HttpClient client = new DefaultHttpClient();
             //发送get请求
-            HttpGet request = new HttpGet(url);
             RequestConfig config = getRequestConfig();
-            HttpHost proxy = new HttpHost(config.getProxy().getHostName(), config.getProxy().getPort());
-            System.out.println("代理ip地址是"+config.getProxy().getHostName()+",代理端口为"+config.getProxy().getPort());
-            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY, proxy);
-
-            HttpResponse response = client.execute(request);
-
+            CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(config).build();
+            HttpGet request = new HttpGet(url);
+            HttpResponse response = httpclient.execute(request);
             /**请求发送成功，并得到响应**/
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 /**读取服务器返回过来的json字符串数据**/
-                String strResult = EntityUtils.toString(response.getEntity(),"gb2312");
-
+                String strResult = EntityUtils.toString(response.getEntity(),"utf-8");
                 return strResult;
             }
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -254,7 +242,7 @@ public class HttpUtil {
 //        httpPost.setHeader("Referer","http://h5.quandashi.com/search/search.html?search_text=100001&pageSize=10&page=0&name=name");
         httpPost.setHeader("User-Agent","Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Mobile Safari/537.36");
         String charSet = "UTF-8";
-            StringEntity entity = new StringEntity(params, charSet);
+        StringEntity entity = new StringEntity(params, charSet);
         httpPost.setEntity(entity);
         CloseableHttpResponse response = null;
         try {
@@ -333,8 +321,12 @@ public class HttpUtil {
             else{
 //                logger.error("请求返回:"+state+"("+url+")");
             }
-        }
-        finally {
+        }catch (Exception e){
+            e.printStackTrace();
+            RequestConfig requestConfig = getRequestConfig();
+            httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
+
+        } finally {
             if (response != null) {
                 try {
                     response.close();
@@ -350,4 +342,12 @@ public class HttpUtil {
         }
         return null;
     }
-}
+
+
+
+
+
+    }
+
+
+
