@@ -1,6 +1,5 @@
 package com.cxyhome.webmagic.util;
 
-import com.alibaba.fastjson.JSONObject;
 import com.cxyhome.webmagic.dataobject.ProxyKV;
 import com.cxyhome.webmagic.dataobject.ProxyObj;
 import org.apache.http.*;
@@ -10,7 +9,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -25,7 +23,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static com.alibaba.fastjson.JSON.parseObject;
 
@@ -76,6 +77,36 @@ public class HttpUtil {
             HttpResponse response = httpclient.execute(request);
             /**请求发送成功，并得到响应**/
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                /**读取服务器返回过来的json字符串数据**/
+                String strResult = EntityUtils.toString(response.getEntity(),"utf-8");
+                return strResult;
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    /**
+     * 通过代理发送get请求
+     * @return
+     */
+    public static String ProxydoGetWithHeaders(String url,Map<String,String>maps) {
+        try {
+            //发送get请求
+            RequestConfig config = getRequestConfig();
+            CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(config).build();
+            HttpGet request = new HttpGet(url);
+            //将参数传入head中
+            for (Map.Entry<String, String> entry : maps.entrySet()) {
+                request.setHeader(entry.getKey(),entry.getValue());
+            }
+            HttpResponse response = httpclient.execute(request);
+            /**请求发送成功，并得到响应**/
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+//                return response.getEntity().toString();
                 /**读取服务器返回过来的json字符串数据**/
                 String strResult = EntityUtils.toString(response.getEntity(),"utf-8");
                 return strResult;
@@ -206,8 +237,10 @@ public class HttpUtil {
         }
         //设置IP代理
         RequestConfig requestConfig=RequestConfig.custom()
-                .setConnectTimeout(5000)
-                .setSocketTimeout(5000)
+                //设置传输超时时间
+                .setConnectTimeout(30000)
+                //设置请求时间
+                .setSocketTimeout(30000)
                 .setProxy(proxy)
                 .build();
         return  requestConfig;
