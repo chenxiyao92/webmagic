@@ -1,0 +1,32 @@
+POST http://www.so.iptrm.com/txnPatentData01.ajax HTTP/1.1
+Host: www.so.iptrm.com
+Connection: keep-alive
+Accept: */*
+Origin: http://www.so.iptrm.com
+
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.146 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Referer: http://www.so.iptrm.com/app/patentlist
+Accept-Encoding: gzip, deflate
+X-Requested-With: XMLHttpRequest
+Cookie: Hm_lvt_c30cfe64c111172dcd13abe3d7532080=1527910296,1528074267,1528090573,1528181420; Hm_lpvt_c30cfe64c111172dcd13abe3d7532080=1528185214; JSESSIONID=B6900FFA3AA4D3FCE30173B8D723236C; JSESSIONID=78D345C99D15F7C4CEFEC99DADCCF08B
+Accept-Language: zh-CN,zh;q=0.9
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+cache-control: no-cache
+Postman-Token: 6422cd4c-f0c4-4ed8-88d5-46cb7ae45079
+
+secondKeyWord=%25E5%2590%258D%25E7%25A7%25B0%252B%25E6%2591%2598%25E8%25A6%2581%252B%25E4%25B8%25BB%25E6%259D%2583%25E9%25A1%25B9&secondkeyWordVal=%25E6%2591%25A9%25E6%2589%2598%25E8%25BD%25A6&secondSearchType=NOT&express=%2B%28%25E5%2590%258D%25E7%25A7%25B0%252C%25E6%2591%2598%25E8%25A6%2581%252C%25E4%25B8%25BB%25E6%259D%2583%25E9%25A1%25B9%2B%252B%253D%2B%2B%28%2B%25E6%2591%25A9%25E6%2589%2598%25E8%25BD%25A6%2B%29%2B%29%2B&express2=&isFamily=&categoryIndex=&selectedCategory=&patentLib=&patentType=patent2&order=&pdbt=&attribute-node%3Apatent_start-row=1&attribute-node%3Apatent_cache-flag=false&attribute-node%3Apatent_page-row=10&attribute-node%3Apatent_sort-column=ano&attribute-node%3Apatent_page=1
+HTTP/1.1 200 OK
+Server: nginx/1.11.5
+Date: Tue, 05 Jun 2018 08:05:29 GMT
+Content-Type: text/xml;charset=UTF-8
+Content-Length: 220
+Connection: keep-alive
+Cache-Control: no-cache
+
+<?xml version="1.0" encoding="UTF-8"?>
+<context>
+<error-code>999999</error-code>
+<error-desc>调用服务[PatentDataService:txnPatentData01]时产生未知错误</error-desc>
+<flowno>12650ROV320167B5</flowno>
+</context>
