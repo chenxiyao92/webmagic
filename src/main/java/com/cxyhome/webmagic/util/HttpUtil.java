@@ -237,7 +237,7 @@ public class HttpUtil {
         }
         //设置IP代理
         RequestConfig requestConfig=RequestConfig.custom()
-                //设置传输超时时间
+                //设置传输超时时间 秒
                 .setConnectTimeout(30000)
                 //设置请求时间
                 .setSocketTimeout(30000)

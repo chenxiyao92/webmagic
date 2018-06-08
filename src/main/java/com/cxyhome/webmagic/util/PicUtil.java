@@ -1,6 +1,8 @@
 package com.cxyhome.webmagic.util;
 
 import com.cxyhome.webmagic.dao.Transfer;
+import com.cxyhome.webmagic.thread.PicDownloaderr;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
 import org.apache.http.client.config.RequestConfig;
@@ -38,7 +40,7 @@ public class PicUtil {
     }
 
     /**
-     * 下载商标局的url的方法
+     * 下载权大师的url的方法
      *
      * @param map 传入的urls
      *             4f6a5dd4/c77de3a8/5474990e/543c7ec7/logo_middle.jpg
@@ -51,6 +53,7 @@ public class PicUtil {
         RequestConfig config = getRequestConfig();
         String baseFile = "D:\\images\\";
         //创建文件夹和文件
+        HashMap<String, String> retryUrlMap = new HashMap<>();
         for (Map.Entry<String, String> entry : map.entrySet()) {
         //目标file文件
             File file = new File(baseFile, entry.getValue());
@@ -97,17 +100,21 @@ public class PicUtil {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                //将url加入url队列  TODO: 待商榷
+                retryUrlMap.put(map.get(entry.getKey()), entry.getValue());
 
-                map.put(map.get(entry.getKey()), entry.getValue());
+//              如果出错 返回为null 应该重新获得
+                continue;
             }
+
             //判断请求返回状态 200
             if (!checkState(baseUrl + entry.getKey(), response)) {
                 //如果返回状态为错误 则将url加入url中再次发送
-                //TODO: 待商榷
-                map.put(map.get(entry.getKey()), entry.getValue());
-                logger.info(baseUrl + entry.getKey() + "下载图片失败");
+                retryUrlMap.put(map.get(entry.getKey()), entry.getValue());
+                logger.info(baseUrl + entry.getKey() + "返回状态出错,下载图片失败");
+                // 跳过本次
+                continue;
             }
+
             //通过response获取输入流
             try {
                 InputStream inputStream = response.getEntity().getContent();
@@ -124,6 +131,8 @@ public class PicUtil {
                 e.printStackTrace();
             }
         }
+        //将下载失败的重新下载一遍
+        new PicDownloaderr(retryUrlMap).start();
     }
 
     private static void setQDSClientParameter(HttpGet httpGet) {
@@ -237,7 +246,7 @@ public class PicUtil {
         int state = status.getStatusCode();
         //如果状态正常
         if (state == HttpStatus.SC_OK) {
-            logger.info("状态请求正常");
+            logger.info(urlList+"状态请求正常");
             return true;
         } else {
             logger.error("状态请求失败:请求返回:" + state + "请求url" + urlList);
@@ -281,8 +290,14 @@ public class PicUtil {
     }
 
 
+    /**
+     * 3571bde9/44aeb4d0/4a57f666/0f57b35b/logo_middle.jpg
+     * @param imgAddr
+     * @param name
+     * @return
+     */
     public static String makeLocalImgAddr(String imgAddr, String name) {
-        String storeUrl = name+"/"+DateUtil.getYear()+"/"+DateUtil.getMonth()+"/"+DateUtil.getDay()+"/"+new Date().getTime();
+        String storeUrl = name+"/"+DateUtil.getYear()+"/"+DateUtil.getMonth()+"/"+DateUtil.getDay()+"/"+DigestUtils.md5Hex(imgAddr);
         String suffix = imgAddr.substring(imgAddr.indexOf("."));
          return    storeUrl+suffix;
     }
