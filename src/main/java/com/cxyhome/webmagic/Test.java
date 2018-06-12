@@ -87,7 +87,7 @@
 //        }
 //    }
 //
-//    private static List<String> getSortedKeys(JSONObject paramJSONObject)
+//    private static MyList<String> getSortedKeys(JSONObject paramJSONObject)
 //    {
 //        Iterator localIterator = paramJSONObject.keys();
 //        ArrayList localArrayList = new ArrayList();
@@ -127,10 +127,10 @@
 //            //取出value
 //            Object localObject1 = localEntry.getValue();
 //            //如果值是一个 数组的情况
-//            if (localObject1 instanceof List)
+//            if (localObject1 instanceof MyList)
 //            {
 //                //
-//                Iterator valueIterator = ((List)localObject1).iterator();
+//                Iterator valueIterator = ((MyList)localObject1).iterator();
 //                ArrayList localArrayList = null;
 //                while (valueIterator.hasNext())
 //                {
@@ -141,7 +141,7 @@
 //                        continue;
 //                    //生成和 最初迭代器长度的List
 //                    if (localArrayList == null)
-//                        localArrayList = new ArrayList(((List)localObject1).size());
+//                        localArrayList = new ArrayList(((MyList)localObject1).size());
 //                    localArrayList.add(((e)localObject2).m_());
 //
 //                }
@@ -151,7 +151,7 @@
 //                    JSONArray localJSONArray2 = new JSONArray(localArrayList);
 //                    localJSONObject.put((String)localEntry.getKey(), localJSONArray2);
 //                }
-//                JSONArray localJSONArray1 = new JSONArray((List)localObject1);
+//                JSONArray localJSONArray1 = new JSONArray((MyList)localObject1);
 //                localJSONObject.put((String)localEntry.getKey(), localJSONArray1);
 //            }
 //            if (localObject1 instanceof Map)
@@ -189,10 +189,10 @@
 //        {
 //            localEntry = (Map.Entry)localIterator1.next();
 //            localObject1 = localEntry.getValue();
-//            if (!localObject1 instanceof List)
+//            if (!localObject1 instanceof MyList)
 //                break label283;
 //            localStringBuilder2 = new StringBuilder();
-//            Iterator localIterator2 = ((List)localObject1).iterator();
+//            Iterator localIterator2 = ((MyList)localObject1).iterator();
 //            while (localIterator2.hasNext())
 //            {
 //                Object localObject3 = localIterator2.next();
@@ -230,7 +230,7 @@
 //            localStringBuilder = new StringBuilder();
 //            //添加字符串
 //            localStringBuilder.append("secret.wdj.client");
-//            //List<String>
+//            //MyList<String>
 //            Iterator localIterator = getSortedKeys(localJSONObject).iterator();
 //            while (localIterator.hasNext())
 //            {
@@ -298,7 +298,7 @@
 //        return str1;
 //    }
 //
-//    protected final String getABTestValue(List<String> paramList)
+//    protected final String getABTestValue(MyList<String> paramList)
 //    {
 //        if (i.a(paramList));
 //        StringBuilder localStringBuilder;
@@ -449,7 +449,7 @@
 //    public void setABTestInfoForRecSet(PPAdBean paramPPAdBean)
 //    {
 //        ExRecommendSetBean localExRecommendSetBean = (ExRecommendSetBean)((AdExDataBean)paramPPAdBean).exData;
-//        List localList = localExRecommendSetBean.content;
+//        MyList localList = localExRecommendSetBean.content;
 //        if (!i.b(paramPPAdBean.abTestNames))
 //            return;
 //        if (TextUtils.isEmpty(localExRecommendSetBean.abTestValue))

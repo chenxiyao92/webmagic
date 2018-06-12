@@ -44,7 +44,7 @@ public class PssGovDetail {
         }
 
 //        // 设置post请求体，设置post请求参数
-//        List<NameValuePair> parameters = new ArrayList<>();
+//        MyList<NameValuePair> parameters = new ArrayList<>();
 //        /**
 //         * searchCondition.searchExp=((%E5%8F%91%E6%98%8E%E5%90%8D%E7%A7%B0%3D(%E7%BE%8E%E7%9A%84)))&
 //         * searchCondition.dbId=VDB&
