@@ -1,7 +1,7 @@
 package com.cxyhome.webmagic.util;
 
 import com.cxyhome.webmagic.dao.Transfer;
-import com.cxyhome.webmagic.thread.PicDownloaderr;
+import com.cxyhome.webmagic.thread.PicDownloader;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
@@ -132,7 +132,7 @@ public class PicUtil {
             }
         }
         //将下载失败的重新下载一遍
-        new PicDownloaderr(retryUrlMap).start();
+        new PicDownloader(retryUrlMap).start();
     }
 
     private static void setQDSClientParameter(HttpGet httpGet) {

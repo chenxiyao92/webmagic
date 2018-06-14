@@ -14,6 +14,7 @@ public class GoodsList {
     private String name;
     private String isdelete;
     private String flag;
+
     public void setDataId(String dataId) {
          this.dataId = dataId;
      }

@@ -12,7 +12,7 @@
 
 
 
-        <insert id="insertInfo" parameterType="TmInfo">
+        <insert id="insertInfo" parameterType="Info">
           insert  into tm_info(id,mid,img_addr,mark,serial_number,classification_info,registration_number,filing_date,international_classes,
           applicant_name,applicant_name_en,applicant_address,applicant_address_en,first_publication_number,published_opposition_date,
           registration_publication_number,registration_date,multiple_owners,register_type,possession_term_start,possession_term_end,mark_type,
@@ -24,19 +24,19 @@
         </insert>
 
         <!-- 类似群信息 -->
-        <insert id="insertClassificationInfo" parameterType="TmClassificationInfo">
+        <insert id="insertClassificationInfo" parameterType="ClassificationInfo">
             insert  into tm_classification_info(id,product_name,international_classes)
             values (#{classificationInfo.id},#{classificationInfo.productName},#{classificationInfo.internationalClasses});
         </insert>
 
         <!-- 国际分类编号 -->
-        <insert id="insertInternationalClasses" parameterType="TmInternationalClasses">
+        <insert id="insertInternationalClasses" parameterType="InternationalClasses">
           insert into tm_international_classes(id,description)
           values (#{internationalClasses.id},#{internationalClasses.description});
         </insert>
 
         <!-- 商标状态表 -->
-        <insert id="insertProcessState" parameterType="TmProcessState">
+        <insert id="insertProcessState" parameterType="ProcessState">
            insert into tm_process_state(id,mark,serial_number,international_classes,brand_process_state)
            values (null ,#{processState.mark},#{processState.serialNumber},#{processState.internationalClasses},#{processState.brandProcessState});
         </insert>
@@ -50,6 +50,11 @@
             #{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number},#{trademark.number}, #{trademark.number}
             )
         </insert>
+
+    <insert id="insertCategory" parameterType="TradeClassify">
+    INSERT into tm_category
+    VALUES(#{tradeClassify.id},#{tradeClassify.shortDesc},null);
+    </insert>
 
 
 </mapper>

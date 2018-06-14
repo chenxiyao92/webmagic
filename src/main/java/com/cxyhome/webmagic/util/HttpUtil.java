@@ -358,7 +358,6 @@ public class HttpUtil {
             e.printStackTrace();
             RequestConfig requestConfig = getRequestConfig();
             httpclient = HttpClients.custom().setDefaultRequestConfig(requestConfig).build();
-
         } finally {
             if (response != null) {
                 try {

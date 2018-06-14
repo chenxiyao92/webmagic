@@ -1,4 +1,4 @@
-package com.cxyhome.webmagic;
+package com.cxyhome.webmagic.processor;
 
 
 import org.apache.commons.lang3.StringUtils;

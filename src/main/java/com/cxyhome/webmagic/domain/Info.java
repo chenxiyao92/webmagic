@@ -11,6 +11,7 @@ import java.util.List;
 public class Info {
 
   private Long id;
+
   private Long mid;
   /**
    * 商标图片地址
@@ -45,6 +46,9 @@ public class Info {
    */
   private Date filingDate;
 
+  /**
+   * 展示的申请日期
+   */
   private String showFilingDate;
   /**
    * 国际分类
@@ -141,8 +145,13 @@ public class Info {
    */
   private String brandStatus;
 
+  /**
+   * 商品和服务信息
+   */
   private List<ClassificationInfo> classificationInfos;
-
+  /**
+   * 商标流程状态
+   */
   private List<ProcessState> processStates;
 
   /**
@@ -156,6 +165,7 @@ public class Info {
    * @return
    */
   private List<GoodsList> goodsLists;
+
 
   public List<GoodsList> getGoodsLists() {
     return goodsLists;

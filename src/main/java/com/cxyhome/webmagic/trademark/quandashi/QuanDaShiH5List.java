@@ -1,19 +1,13 @@
-package com.cxyhome.webmagic.quandashi;
+package com.cxyhome.webmagic.trademark.quandashi;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxyhome.webmagic.dataobject.JsonRootBean;
 import com.cxyhome.webmagic.util.HttpUtil;
 
 import java.util.HashMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class QuanDaShiH5List {
-
-    static Pattern pattern = Pattern.compile("id:");
-
-
-
 
     public static String queryByKeyword(String key) {
         JSONObject param = new JSONObject();

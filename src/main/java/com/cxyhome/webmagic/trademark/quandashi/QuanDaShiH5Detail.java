@@ -1,4 +1,4 @@
-package com.cxyhome.webmagic.quandashi;
+package com.cxyhome.webmagic.trademark.quandashi;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cxyhome.webmagic.domain.quandashi.QuanDaShiTrademarkInfo;

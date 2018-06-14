@@ -1,6 +1,7 @@
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cxyhome.webmagic.domain.Patent.Instruction;
+import com.cxyhome.webmagic.thread.TrademarkDownloader;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -8,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Demo {
     public static void main(String[] args) {
@@ -36,7 +38,7 @@ public class Demo {
 //        System.out.println(s4);
 
 
-//      String content =   "<html xmlns:w=\"urn:schemas-microsoft-com:office:word\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">    \n" +
+//      String content =   "<html xmlns:w=\"urn:schemas-microsoft-com:office:text\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">    \n" +
 //                "<p style=\"line-height:125%;mso-char-indent-count:2.0;background:#FFFFFF;vertical-align:middle\">\n" +
 //                "\n" +
 //                "<span style=\"font-size:12.0pt;font-family:微软雅黑;mso-ascii-font-family:\"Times New Roman\";mso-hansi-font-family:\"Times New Roman\"\">本发明公告了一种百度锅，属于锅具技术领域，它由锅口、提手、进水口、进水管、水箱、锅底、内锅底组成，其特征在于锅底包围内锅底，锅底上侧边留有进水口的进水管，内锅底上留有提手，使用时从进水口内通过进水管向锅底包围内锅底的容器内注水至水淹满内锅底，然后把锅底放在炉子上加热至水沸腾后，从锅口向锅内放入烹调油与鸡蛋即可炒熟，其有益效果是设计简单，成本低廉，温度容易控制，实用性较大。\n" +
@@ -55,7 +57,7 @@ public class Demo {
 //
 //        }
 
-//        String content =   "<html xmlns:w=\"urn:schemas-microsoft-com:office:word\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n" +
+//        String content =   "<html xmlns:w=\"urn:schemas-microsoft-com:office:text\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n" +
 //                "<div class=\"Section1\">\n" +
 //                "  \n" +
 //                "    \n" +
@@ -137,91 +139,6 @@ public class Demo {
     /*    String str ="0001 . 1.一种美容仪器，其特征在于，包括：0001 . 导电膜片，所述导电膜片适于接触人脸；0001 . 导电电极，所述导电电极与所述导电膜片间隔开设置，且所述导电电极适于通过人体与所述导电膜片导接；0001 . 输出接头，所述输出接头上具有第一电极和第二电极，所述第一电极与所述导电膜片相连，所述第二电极与所述导电电极相连，所述输出接头适于与外部终端相连，以使所述美容仪器由所述外部终端驱动工作和/或调控工作。0002 . 2.根据权利要求1所述的美容仪器，其特征在于，进一步包括：控制装置，所述控制装置串接在所述导电膜片与所述导电电极之间且用于调控所述美容仪器工作。0003 . 3.根据权利要求2所述的美容仪器，其特征在于，所述控制装置包括升压元件和/或整流元件。0004 . 4.根据权利要求2所述的美容仪器，其特征在于，所述控制装置设在所述导电电极内。0005 . 5.根据权利要求1所述的美容仪器，其特征在于，所述导电电极为金属片。0006 . 6.根据权利要求1所述的美容仪器，其特征在于，所述导电电极设在所述外部终端上。0007 . 7.根据权利要求1所述的美容仪器，其特征在于，所述第一电极与所述导电膜片通过导线相连，所述导线与所述导电膜片可拆卸地相连。0008 . 8.根据权利要求7所述的美容仪器，其特征在于，所述导线与所述导电膜片通过插拔组件或按扣组件或磁吸组件可拆卸地相连。0009 . 9.根据权利要求1所述的美容仪器，其特征在于，所述输出接头为耳机插头或USB插头。0010 . 10.根据权利要求1所述的美容仪器，其特征在于，所述导电膜片形成为人脸形且适于贴敷整个人脸，或所述导电膜片形成为眼罩形且适于贴敷人眼周围。0011 . 11.根据权利要求1所述的美容仪器，其特征在于，所述导电膜片为柔性材料件。0012 . 12.根据权利要求1所述的美容仪器，其特征在于，所述导电膜片为防水材料件。0013 . 13.根据权利要求1所述的美容仪器，其特征在于，所述导电膜片为导电硅胶材料件或导电纤维材料件。0014 . 14.根据权利要求1所述的美容仪器，其特征在于，进一步包括：0014 . 加热膜片，所述加热膜片贴设在所述导电膜片的远离人脸的一侧以用于加热所述导电 膜片以调节人脸温度。0015 . 15.根据权利要求1所述的美容仪器，其特征在于，进一步包括：0015 . 加固膜片，所述加固膜片的形状可调节且贴设在所述导电膜片的远离人脸的一侧以用于调整所述导电膜片的形状。0016 . 16.一种美容系统，其特征在于，包括如权利要求1-15中任一项所述的美容仪器和外部终端，所述美容仪器的所述输出接头与所述外部终端相连，以使所述美容仪器由所述外部终端驱动工作和/或调控工作。0017 . 17.根据权利要求16所述的美容系统，其特征在于，所述外部终端与所述美容仪器通信以调控所述美容仪器工作。0018 . 18.根据权利要求17所述的美容系统，其特征在于，所述外部终端记录用户的使用参数和使用时间，且根据所述使用参数和所述使用时间对所述美容仪器的工作电流强度进行控制。0019 . 19.根据权利要求17所述的美容系统，其特征在于，所述外部终端获取所述导电膜片上面膜的类型信息，且根据所述面膜的类型信息对所述美容仪器的工作电流强度进行控制。";
         System.out.println(str.replaceAll("\\d{4}\\s\\.", ""));*/
 
-    String s = "<div class=\"qwb_box_tabx\">\n" +
-            "\t\t\t\t\t\t\t<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n" +
-            "\t\t\t\t\t\t\t\t<tr>\n" +
-            "\t\t\t\t\t\t\t\t\t<td width=\"6%\" align=\"center\" class=\"firstx\">&nbsp;</td>\n" +
-            "\t\t\t\t\t\t\t\t\t<td width=\"22%\" align=\"center\">法律状态公告日</td>\n" +
-            "\t\t\t\t\t\t\t\t\t<td width=\"21%\">法律状态</td>\n" +
-            "\t\t\t\t\t\t\t\t\t<td width=\"51%\">法律状态信息</td>\n" +
-            "\t\t\t\t\t\t\t\t</tr>\n" +
-            "\n" +
-            "\t\t\t\t\t\t\t\t\n" +
-            "\t\t\t\t\t\t\t\t\n" +
-            "\t\t\t\t\t\t\t\t<tr style=\"height: 110px\">\n" +
-            "\t\t\t\t\t\t\t\t\t<td align=\"center\" class=\"firstd\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t<div class='litests redss' title=\"发明专利申请公布后的驳回\"></div>\n" +
-            "\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\n" +
-            "\t\t\t\t\t\t\t\t\t<td colspan=\"3\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t<div class=\"fvztzt\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<div class=\"duiyuh\"></div>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<td width=\"23%\" align=\"center\"><span>2018.02.27</span></td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<td width=\"23%\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t发明专利申请公布后的驳回\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<td width=\"54%\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t发明专利申请公布后的驳回&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IPC(主分类):A61N   1/30&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;专利申请号:2015108004912&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请公布日:20160120\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
-            "\t\t\t\t\t\t\t\t\t\t</div>\n" +
-            "\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\t\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t\t\n" +
-            "\t\t\t\t\t\t\t\t<tr style=\"height: 110px\">\n" +
-            "\t\t\t\t\t\t\t\t\t<td align=\"center\" class=\"firstd\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t<div class='litests yellowss' title=\"实质审查的生效\"></div>\n" +
-            "\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\n" +
-            "\t\t\t\t\t\t\t\t\t<td colspan=\"3\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t<div class=\"fvztzt\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<div class=\"duiyuh\"></div>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<td width=\"23%\" align=\"center\"><span>2016.02.17</span></td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<td width=\"23%\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t实质审查的生效\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<td width=\"54%\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t实质审查的生效&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IPC(主分类):A61N   1/30&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;申请日:20151118\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
-            "\t\t\t\t\t\t\t\t\t\t</div>\n" +
-            "\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\t\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t\t\n" +
-            "\t\t\t\t\t\t\t\t<tr style=\"height: 110px\">\n" +
-            "\t\t\t\t\t\t\t\t\t<td align=\"center\" class=\"firstd\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t<div class='litests yellowss' title=\"公开\"></div>\n" +
-            "\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\n" +
-            "\t\t\t\t\t\t\t\t\t<td colspan=\"3\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t<div class=\"fvztzt\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<div class=\"duiyuh\"></div>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<td width=\"23%\" align=\"center\"><span>2016.01.20</span></td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<td width=\"23%\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t公开\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t<td width=\"54%\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t\t公开\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
-            "\t\t\t\t\t\t\t\t\t\t</div>\n" +
-            "\t\t\t\t\t\t\t\t\t</td>\n" +
-            "\t\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t\t\n" +
-            "\t\n" +
-            "\t\t\t\t\t\t\t</table>\n" +
-            "\n" +
-            "\t\t\t\t\t\t</div>";
-
 //        Document parse = Jsoup.parse(s);
 //        Elements qwb_box_tabx = parse.getElementsByClass("qwb_box_tabx");
 //        for (org.jsoup.nodes.Element link : qwb_box_tabx) {
@@ -242,53 +159,25 @@ public class Demo {
 //        System.out.println(s1);
 
 
-//        HashMap<Integer, String> map = new HashMap<>();
-//        map.put(1, "化学原料");
-//        map.put(2, "颜料油漆");
-//        map.put(3, "日化用品");
-//        map.put(4, "燃料油脂");
-//        map.put(5, "医用医药");
-//        map.put(6, "金属材料");
-//        map.put(7, "机械材料");
-//        map.put(8, "手工器械");
-//        map.put(9, "科学仪器");
-//        map.put(10, "医疗器械");
-//        map.put(11, "灯具空调");
-//        map.put(12, "运输工具");
-//        map.put(13, "军火烟火");
-//        map.put(14, "珠宝钟表");
-//        map.put(15, "乐器用品");
-//        map.put(16, "办公用品");
-//        map.put(17, "橡胶制品");
-//        map.put(18, "皮革皮具");
-//        map.put(19, "建筑材料");
-//        map.put(20, "家具制品");
-//        map.put(21, "厨房洁具");
-//        map.put(22, "绳网袋蓬");
-//        map.put(23, "纱线丝品");
-//        map.put(24, "布料床单");
-//        map.put(25, "服装鞋帽");
-//        map.put(26, "纽扣拉链");
-//        map.put(27, "地毯席垫");
-//        map.put(28, "健身器材");
-//        map.put(29, "肉类食品");
-//        map.put(30, "方便食品");
-//        map.put(31, "饲料种耔");
-//        map.put(32, "啤酒饮料");
-//        map.put(33, "含酒精酒");
-//        map.put(34, "烟草烟具");
-//        map.put(35, "广告销售");
-//        map.put(36, "金融物管");
-//        map.put(37, "建筑修理");
-//        map.put(38, "通讯服务");
-//        map.put(39, "运输贮藏");
-//        map.put(40, "材料加工");
-//        map.put(41, "教育娱乐");
-//        map.put(42, "科技编程");
-//        map.put(43, "餐饮住宿");
-//        map.put(44, "医疗园艺");
-//        map.put(45, "社会服务");
-//        System.out.println(JSON.toJSONString(map));
+
+
+        List<String> list = new ArrayList<>();
+        list.add("15713572");
+        new TrademarkDownloader(list).start();
+//        for (int i = 100; i <= 1000 ; i++) {
+//            if (i % 100 !=0){
+//                list.add(15713572 + i + "");
+//            }else {
+//                list.add(15713572 + i + "");
+//                //每满100个开一个线程
+//                new TrademarkDownloader(list).start();
+//                list.clear();
+//            }
+//        }
+
+
+
+
 
     }
 

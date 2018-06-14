@@ -1,10 +1,9 @@
-package com.cxyhome.webmagic;
+package com.cxyhome.webmagic.processor;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
-import us.codecraft.webmagic.selector.Selectable;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

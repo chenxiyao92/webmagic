@@ -1,4 +1,4 @@
-package com.cxyhome.webmagic;
+package com.cxyhome.webmagic.processor;
 
 
 import com.cxyhome.webmagic.util.HttpUtil;

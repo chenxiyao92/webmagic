@@ -1,4 +1,4 @@
-package com.cxyhome.webmagic;
+package com.cxyhome.webmagic.processor;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;

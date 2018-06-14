@@ -3,10 +3,18 @@ package com.cxyhome.webmagic.domain;
 
 public class ClassificationInfo {
 
+  /**
+   * 中类别号码
+   */
   private long id;
+  /**
+   * 商品名称
+   */
   private String productName;
+  /**
+   * 国际分类号
+   */
   private long internationalClasses;
-
 
   public long getId() {
     return id;

@@ -1,6 +1,7 @@
 package com.cxyhome.webmagic.mapper;
 
 import com.cxyhome.webmagic.domain.*;
+import com.cxyhome.webmagic.domain.TradeClassify;
 import org.apache.ibatis.annotations.Param;
 
 public interface TrademarkMapper {
@@ -16,4 +17,7 @@ public interface TrademarkMapper {
     int insertInternationalClasses(@Param("internationalClasses")InternationalClasses internationalClasses);
 
     int insertClassificationInfo(@Param("internationalClasses")ClassificationInfo classificationInfo);
+
+    int insertCategory(@Param("tradeClassify")TradeClassify tradeClassify);
+
 }
