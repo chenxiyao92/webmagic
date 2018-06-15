@@ -502,8 +502,7 @@ public class Info {
     return localImageAddr;
   }
 
-  public String setLocalImageAddr(String localImageAddr) {
+  public void setLocalImageAddr(String localImageAddr) {
     this.localImageAddr = localImageAddr;
-    return localImageAddr;
   }
 }

@@ -2,6 +2,7 @@ package com.cxyhome.webmagic.thread;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.cxyhome.webmagic.dataobject.Items;
 import com.cxyhome.webmagic.dataobject.JsonRootBean;
 import com.cxyhome.webmagic.dataobject.ProxyKV;
 import com.cxyhome.webmagic.dataobject.ProxyObj;
@@ -25,10 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.alibaba.fastjson.JSON.parseObject;
 
@@ -53,45 +51,54 @@ public class TrademarkDownloader extends Thread {
     /**
      * 目标对象集合
      */
-    private List objs;
+    private List<Info> objs;
 
     @Override
     public void run() {
+        logger.info(getName()+"线程启动");
+        long startDate = new Date().getTime();
         sdf = new SimpleDateFormat("yyyy-MM-dd");
         //目标对象集合
-        objs = new ArrayList();
+        objs = new ArrayList<>();
         //图片url的集合
         Map<String, String> urlMap = new HashMap<>();
+        //申请号id结合
         for (String id : list) {
-            //根据申请号查询出 权大师内部的商标查询号
-            String dateId = queryByKeyword(id);
-            if (dateId == null) {
+            //查询同申请号的多个商标
+            List<String> ids = queryByKeyword(id);
+            if (ids==null || ids.size()==0) {
                 continue;
             }
             //权大师INFO对象
-            Data data = queryById(dateId).getData();
-            //将权大师Data对象 封装为 自身数据库对象
-            Info info = toInfo(data);
-            if (info != null) {
-                urlMap.put(info.getImgAddr(), info.getLocalImageAddr());
-                objs.add(info);
+            for (String s:ids) {
+                Data data = queryById(s).getData();
+                if (data!=null){
+                    continue;
+                }
+                //将权大师Data对象 封装为 自身数据库对象
+                Info info = toInfo(data);
+                if (info != null) {
+                    urlMap.put(info.getImgAddr(), info.getLocalImageAddr());
+                    objs.add(info);
+                }
             }
         }
         //将目标对象保存到数据库
         String result = JSON.toJSONString(objs);
+
         //开启一个线程下载权大师的图片
+        logger.info("待下载的图片有"+urlMap.size()+"张"+urlMap.toString());
         if (urlMap.size()!=0){
             new PicDownloader(urlMap).start();
         }
         //打印出结果
-        System.out.println(result);
+       logger.info(result);
+        long endDate = new Date().getTime();
+        logger.info(getName()+"线程结束,用时"+ (endDate-startDate)/1000+"秒");
     }
-
     //共享的代理对象
     HttpHost proxy = null;
-
     RequestConfig config = null;
-
     /**
      * 根据权大师的内容部id进行查询
      *
@@ -156,7 +163,14 @@ public class TrademarkDownloader extends Thread {
             //重新获取代理ip和client对象
             listHttpClient = HttpClients.custom().setDefaultRequestConfig(getRequestConfig()).build();
         }finally {
-            logger.info("申请号" + id + "获取权大师数据" + response == null ? "失败" : "成功");
+            String result = null;
+            if (response == null ) {
+                result = "失败";
+            }else {
+                result = "成功";
+            }
+            //针对请求的失败的未进行操作
+            logger.info("申请号" + id + "数据获取"+result);
         }
         return null;
     }
@@ -167,7 +181,7 @@ public class TrademarkDownloader extends Thread {
      * @param key
      * @return
      */
-    public String queryByKeyword(String key) {
+    public List<String> queryByKeyword(String key) {
         //定义post请求参数
         JSONObject param = new JSONObject();
         param.put("appKey", "quandashi2151283371");
@@ -202,7 +216,7 @@ public class TrademarkDownloader extends Thread {
         if (config == null) {
             config = getRequestConfig();
         }
-        System.out.println("代理ip地址是" + config.getProxy().getHostName() + ",代理端口为" + config.getProxy().getPort());
+        logger.info("代理ip地址是" + config.getProxy().getHostName() + ",代理端口为" + config.getProxy().getPort());
         //实例化CloseableHttpClient对象
         if (listHttpClient == null) {
             listHttpClient = HttpClients.custom().setDefaultRequestConfig(config).build();
@@ -227,15 +241,26 @@ public class TrademarkDownloader extends Thread {
             if (state == HttpStatus.SC_OK) {
                 JsonRootBean jsonRootBean = JSONObject.parseObject(EntityUtils.toString(response.getEntity()), JsonRootBean.class);
                 //取出对象第一个对象
-                return jsonRootBean.getData().getItems().get(0).getId();
+                List<Items> items = jsonRootBean.getData().getItems();
+                List<String> list = new ArrayList<>();
+                for (Items i:items) {
+                    list.add(i.getId());
+                }
+                return list;
             }
         } catch (Exception e) {
             e.printStackTrace();
             //重新获取代理ip和client对象
             listHttpClient = HttpClients.custom().setDefaultRequestConfig(getRequestConfig()).build();
         } finally {
+            String result = null;
+            if (response == null ) {
+                result = "失败";
+            }else {
+                result = "成功";
+            }
             //针对请求的失败的未进行操作
-            logger.info("申请号" + key + "获取权大师id" + response == null ? "失败" : "成功");
+            logger.info("申请号" + key + "获取权大师列表数据"+result);
         }
         return null;
     }
@@ -244,7 +269,7 @@ public class TrademarkDownloader extends Thread {
         if (proxy == null) {
             String getProxyUrl = "http://piping.mogumiao.com/proxy/api/get_ip_al?appKey=492fb0fc865646cba9b6798b4093f7ff&count=1&expiryDate=0&format=1&newLine=2";
             String result = HttpUtil.doGet(getProxyUrl);
-            ProxyKV proxyKV = parseObject(result, ProxyObj.class).getMsg().get(0);
+            ProxyKV  proxyKV = parseObject(result, ProxyObj.class).getMsg().get(0);
             //IP代理
             proxy = new HttpHost(proxyKV.getIp(), proxyKV.getPort(), null);
         }
@@ -263,6 +288,10 @@ public class TrademarkDownloader extends Thread {
     private Info toInfo(Data data) {
         //如果查询出的数据为空 返回为空
         if (data == null) {
+            return null;
+        }
+        //如果查询出的数据为空,则跳过
+        if (data ==null){
             return null;
         }
         //准备封装数据
@@ -286,20 +315,22 @@ public class TrademarkDownloader extends Thread {
 //            info.setApplicantAddress(data.getBrand().getAdress());
 //            info.setApplicantAddressEn(data.getBrand().getEnAdress());
 //            info.setFirstPublicationNumber(Integer.parseInt(data.getBrand().getNoticeIssue()));
+
         //初审公告日 noticeDate : "2013-06-13"
         info.setPublishedOppositionDate(data.getBrand().getNoticeDate());
         if (data.getBrand().getNoticeDate() != null) {
             info.setShowPublishedOppositionDate(sdf.format(data.getBrand().getNoticeDate()));
         } else {
-            info.setShowPublishedOppositionDate(null);
+            info.setShowPublishedOppositionDate("暂无");
         }
 //            info.setRegistrationPublicationNumber(Integer.parseInt(data.getBrand().getRegisterIssue()));
+
         //申请日期 v-createDate : "2012-05-25"
         info.setRegistrationDate(data.getBrand().getRegisterDate());
         if (data.getBrand().getRegisterDate() != null) {
             info.setShowRegistrationDate(sdf.format(data.getBrand().getRegisterDate()));
         } else {
-            info.setShowRegistrationDate(null);
+            info.setShowRegistrationDate("暂无");
         }
 //            info.setIsMultipleOwners("无");
 //            info.setMultipleOwners("");
@@ -310,7 +341,7 @@ public class TrademarkDownloader extends Thread {
         if (data.getBrand().getPrivateStartDate() != null) {
             info.setShowPossessionTermStart(sdf.format(data.getBrand().getPrivateStartDate()));
         } else {
-            info.setShowPossessionTermStart(null);
+            info.setShowPossessionTermStart("暂无");
         }
 //            info.setPossessionTermEnd(data.getBrand().getPrivateEndDate());
 //            info.setMarkType("颜色商标");
@@ -322,16 +353,22 @@ public class TrademarkDownloader extends Thread {
 
         //权大师的流程对象
         List<FlowList> flowList = data.getFlowList();
-        if (flowList != null && flowList.size() > 0) {
+        if (flowList!=null && flowList.size()>0){
             for (FlowList f : flowList) {
-                if (f.getLastTime() != null) {
+                if (f.getLastTime()!=null){
                     f.setShowLastTime(sdf.format(f.getLastTime()));
                 }
                 f.setLastTime(null);
                 f.setCode(null);
             }
         }
-        info.setFlowLists(flowList);
+        //对流程对象进行日期倒叙
+        ArrayList<FlowList> returnFlowList = new ArrayList<>();
+        for (int i = flowList.size()-1;i>=0;i--){
+            returnFlowList.add(flowList.get(i));
+        }
+        info.setFlowLists(returnFlowList);
+
         List<GoodsList> goodsList = data.getGoodsList();
         for (GoodsList g : goodsList) {
             g.setDataId(null);

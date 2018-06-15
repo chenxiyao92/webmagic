@@ -1,18 +1,25 @@
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.cxyhome.webmagic.domain.Info;
 import com.cxyhome.webmagic.domain.Patent.Instruction;
+import com.cxyhome.webmagic.thread.PicDownloader;
 import com.cxyhome.webmagic.thread.TrademarkDownloader;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.cxyhome.webmagic.trademark.quandashi.TradeMarkQuery.getJson;
+
 public class Demo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
 //        String s = "secondKeyWord=%E5%90%8D%E7%A7%B0%2B%E6%91%98%E8%A6%81%2B%E4%B8%BB%E6%9D%83%E9%A1%B9&secondkeyWordVal=%E6%91%A9%E6%89%98%E8%BD%A6&secondSearchType=NOT&express2=&express=+(%E5%90%8D%E7%A7%B0%2C%E6%91%98%E8%A6%81%2C%E4%B8%BB%E6%9D%83%E9%A1%B9+%2B%3D++(+%E6%91%A9%E6%89%98%E8%BD%A6+)+)+&isFamily=&categoryIndex=&selectedCategory=&patentLib=&patentType=patent2&order=&pdbt=&attribute-node:patent_cache-flag=false&attribute-node:patent_start-row=1&attribute-node:patent_page-row=10&attribute-node:patent_sort-column=ano&attribute-node:patent_page=1";
 //
@@ -161,9 +168,10 @@ public class Demo {
 
 
 
-        List<String> list = new ArrayList<>();
-        list.add("15713572");
-        new TrademarkDownloader(list).start();
+//        List<String> list = new ArrayList<>();
+//        list.add("15713572");
+//        new TrademarkDownloader(list).start();
+
 //        for (int i = 100; i <= 1000 ; i++) {
 //            if (i % 100 !=0){
 //                list.add(15713572 + i + "");
@@ -175,9 +183,41 @@ public class Demo {
 //            }
 //        }
 
+//        List<String> id1 = getJson("C:\\Users\\Administrator\\Desktop\\new\\hw.json");
+//        new TrademarkDownloader(id1).start();
+//        Thread.sleep(10000);
+//
+//        List<String> id2 = getJson("C:\\Users\\Administrator\\Desktop\\new\\lgm.json");
+//        new TrademarkDownloader(id2).start();
+//        Thread.sleep(10000);
+//
+//        List<String> id3 = getJson("C:\\Users\\Administrator\\Desktop\\new\\albb.json");
+//        new TrademarkDownloader(id3).start();
+//        Thread.sleep(10000);
+//
+//        List<String> id4 = getJson("C:\\Users\\Administrator\\Desktop\\new\\ksf.json");
+//        new TrademarkDownloader(id4).start();
+//        Thread.sleep(10000);
+//
+        List<String> id5 = getJson("C:\\Users\\Administrator\\Desktop\\new\\zh.json");
+        new TrademarkDownloader(id5).start();
 
 
 
+//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\albb.json");
+//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\hw.json");
+//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\ksf.json");
+//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\lgm.json");
+//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\tx.json");
+//        String content= FileUtils.readFileToString(file,"UTF-8");
+//        List<Info> infos = JSONObject.parseArray(content, Info.class);
+//        HashMap<String, String> urlMaps = new HashMap<>();
+//        for (Info i:infos) {
+//            urlMaps.put(i.getImgAddr(), i.getLocalImageAddr());
+//        }
+//        new PicDownloader(urlMaps).start();
+//        String s = JSON.toJSONString(list);
+//        System.out.println(s);
 
     }
 
