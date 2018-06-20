@@ -171,7 +171,7 @@ public class Demo {
 //        List<String> list = new ArrayList<>();
 //        list.add("15713572");
 //        new TrademarkDownloader(list).start();
-
+//
 //        for (int i = 100; i <= 1000 ; i++) {
 //            if (i % 100 !=0){
 //                list.add(15713572 + i + "");
@@ -198,17 +198,12 @@ public class Demo {
 //        List<String> id4 = getJson("C:\\Users\\Administrator\\Desktop\\new\\ksf.json");
 //        new TrademarkDownloader(id4).start();
 //        Thread.sleep(10000);
-//
-        List<String> id5 = getJson("C:\\Users\\Administrator\\Desktop\\new\\zh.json");
+
+
+        List<String> id5 = getJson("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\zh-p.json");
         new TrademarkDownloader(id5).start();
 
-
-
-//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\albb.json");
-//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\hw.json");
-//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\ksf.json");
-//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\lgm.json");
-//        File file=new File("C:\\Users\\Administrator\\Desktop\\tradeinfo6.15\\tx.json");
+//        File file=new File("C:\\Users\\Administrator\\Desktop\\new\\bd-p.json");
 //        String content= FileUtils.readFileToString(file,"UTF-8");
 //        List<Info> infos = JSONObject.parseArray(content, Info.class);
 //        HashMap<String, String> urlMaps = new HashMap<>();
@@ -216,8 +211,7 @@ public class Demo {
 //            urlMaps.put(i.getImgAddr(), i.getLocalImageAddr());
 //        }
 //        new PicDownloader(urlMaps).start();
-//        String s = JSON.toJSONString(list);
-//        System.out.println(s);
+
 
     }
 

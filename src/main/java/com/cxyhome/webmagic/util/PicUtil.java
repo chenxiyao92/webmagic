@@ -297,7 +297,8 @@ public class PicUtil {
      * @return
      */
     public static String makeLocalImgAddr(String imgAddr, String name) {
-        String storeUrl = name+"/"+DateUtil.getYear()+"/"+DateUtil.getMonth()+"/"+DateUtil.getDay()+"/"+DigestUtils.md5Hex(imgAddr);
+//        String storeUrl = name+"/"+DateUtil.getYear()+"/"+DateUtil.getMonth()+"/"+DateUtil.getDay()+"/"+DigestUtils.md5Hex(imgAddr);
+        String storeUrl = DigestUtils.md5Hex(imgAddr);
         String suffix = imgAddr.substring(imgAddr.indexOf("."));
          return    storeUrl+suffix;
     }

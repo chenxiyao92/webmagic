@@ -150,7 +150,7 @@ public class PicDownloader extends Thread {
             logger.info(urlList+"状态请求正常");
             return true;
         } else {
-            logger.error("状态请求失败:请求返回:" + state + "请求url" + urlList);
+            logger.error("状态请求失败:请求返回:" + state + "请求url= " + urlList);
             return false;
         }
     }

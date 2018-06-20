@@ -72,7 +72,7 @@ public class TrademarkDownloader extends Thread {
             //权大师INFO对象
             for (String s:ids) {
                 Data data = queryById(s).getData();
-                if (data!=null){
+                if (data==null){
                     continue;
                 }
                 //将权大师Data对象 封装为 自身数据库对象
@@ -244,7 +244,10 @@ public class TrademarkDownloader extends Thread {
                 List<Items> items = jsonRootBean.getData().getItems();
                 List<String> list = new ArrayList<>();
                 for (Items i:items) {
-                    list.add(i.getId());
+                    //针对申请只是一致的情况下
+                    if (key.equals(i.getDataId())){
+                        list.add(i.getId());
+                    }
                 }
                 return list;
             }
