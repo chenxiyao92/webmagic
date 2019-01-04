@@ -22,7 +22,6 @@
 
 
     <dependencies>
-
         <dependency>
             <groupId>us.codecraft</groupId>
             <artifactId>webmagic-core</artifactId>

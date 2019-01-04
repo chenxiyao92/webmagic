@@ -21,7 +21,9 @@ import java.util.Map;
 public class TradeMarkQuery {
 
     public static void main(String[] args) throws IOException {
-      arrQuery(getJson("C:\\Users\\Administrator\\Desktop\\new\\tx.json"));
+
+
+//      arrQuery(getJson("C:\\Users\\Administrator\\Desktop\\new\\tx.json"));
 //        List<String> list = new ArrayList<>();
 //        for (int i = 1; i <= 100 ; i++) {
 //            if (i % 100 !=0){
